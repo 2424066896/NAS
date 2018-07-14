@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="NAS:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="NAS.war">
+      <element id="artifact" artifact-name="NAS:war exploded" />
+    </root>
+  </artifact>
+</component>

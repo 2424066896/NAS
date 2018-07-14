@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="logistics" />
+        <module name="NAS" />
+        <module name="NewsManagement" />
+        <module name="PhoneInfo" />
+        <module name="StuSystem" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="logistics" target="1.7" />
+      <module name="NAS" target="1.7" />
+      <module name="NewsManagement" target="1.7" />
+      <module name="PhoneInfo" target="1.7" />
+      <module name="StuSystem" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
