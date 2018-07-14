@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nas.dao.StaffMapper">
+  <resultMap id="BaseResultMap" type="cn.nas.pojo.Staff">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="staff_num" jdbcType="VARCHAR" property="staffNum" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+    <result column="staff_sex" jdbcType="VARCHAR" property="staffSex" />
+    <result column="staff_gangwei" jdbcType="VARCHAR" property="staffGangwei" />
+    <result column="staff_phone" jdbcType="VARCHAR" property="staffPhone" />
+    <result column="join_time" jdbcType="TIMESTAMP" property="joinTime" />
+    <result column="staff_state" jdbcType="VARCHAR" property="staffState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, staff_num, staff_name, staff_sex, staff_gangwei, staff_phone, join_time, staff_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from staff
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from staff
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.nas.pojo.Staff">
+    insert into staff (id, staff_num, staff_name, 
+      staff_sex, staff_gangwei, staff_phone, 
+      join_time, staff_state)
+    values (#{id,jdbcType=INTEGER}, #{staffNum,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
+      #{staffSex,jdbcType=VARCHAR}, #{staffGangwei,jdbcType=VARCHAR}, #{staffPhone,jdbcType=VARCHAR}, 
+      #{joinTime,jdbcType=TIMESTAMP}, #{staffState,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.nas.pojo.Staff">
+    insert into staff
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="staffNum != null">
+        staff_num,
+      </if>
+      <if test="staffName != null">
+        staff_name,
+      </if>
+      <if test="staffSex != null">
+        staff_sex,
+      </if>
+      <if test="staffGangwei != null">
+        staff_gangwei,
+      </if>
+      <if test="staffPhone != null">
+        staff_phone,
+      </if>
+      <if test="joinTime != null">
+        join_time,
+      </if>
+      <if test="staffState != null">
+        staff_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="staffNum != null">
+        #{staffNum,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null">
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffSex != null">
+        #{staffSex,jdbcType=VARCHAR},
+      </if>
+      <if test="staffGangwei != null">
+        #{staffGangwei,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPhone != null">
+        #{staffPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="joinTime != null">
+        #{joinTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffState != null">
+        #{staffState,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.nas.pojo.Staff">
+    update staff
+    <set>
+      <if test="staffNum != null">
+        staff_num = #{staffNum,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null">
+        staff_name = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffSex != null">
+        staff_sex = #{staffSex,jdbcType=VARCHAR},
+      </if>
+      <if test="staffGangwei != null">
+        staff_gangwei = #{staffGangwei,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPhone != null">
+        staff_phone = #{staffPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="joinTime != null">
+        join_time = #{joinTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffState != null">
+        staff_state = #{staffState,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.nas.pojo.Staff">
+    update staff
+    set staff_num = #{staffNum,jdbcType=VARCHAR},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      staff_sex = #{staffSex,jdbcType=VARCHAR},
+      staff_gangwei = #{staffGangwei,jdbcType=VARCHAR},
+      staff_phone = #{staffPhone,jdbcType=VARCHAR},
+      join_time = #{joinTime,jdbcType=TIMESTAMP},
+      staff_state = #{staffState,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="cn.nas.dao"/>
+    <context:component-scan base-package="cn.nas.service"/>
+    <context:component-scan base-package="cn.nas.tools"/>
+    <!-- 读取数据库配置文件 -->
+    <context:property-placeholder location="classpath:database.properties"></context:property-placeholder>
+
+    <!-- JNDI获取数据源(使用dbcp连接池) -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" scope="singleton">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="minIdle" value="${jdbc.minIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
+        <property name="removeAbandonedTimeout" value="${jdbc.removeAbandonedTimeout}"/>
+        <property name="removeAbandoned" value="${jdbc.removeAbandoned}"/>
+        <!-- sql 心跳 -->
+        <property name= "testWhileIdle" value="true"/>
+        <property name= "testOnBorrow" value="false"/>
+        <property name= "testOnReturn" value="false"/>
+        <property name= "validationQuery" value="select 1"/>
+        <property name= "timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name= "numTestsPerEvictionRun" value="${jdbc.maxActive}"/>
+    </bean>
+
+    <!-- 配置mybitas SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!-- spring与mybatis整合配置，扫描所有dao，在单数据源的情况下可以不写sqlSessionFactoryBeanName
+     通过配置MapperScannerConfigurer可以批量生成映射器实现-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="cn.nas.dao" />
+    </bean>
+
+    <!-- spring与mybatis整合配置，扫描所有dao，当有多个sqlSessionFactory实例时候，
+    自动装配无法进行，此时需要显示指定所依赖的sqlSessionFactory实例 -->
+         <!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+              <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+              <property name="basePackage" value="cn.nas />
+              </bean>
+          -->
+</beans>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:content="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--扫描controller所在的包-->
+    <content:component-scan base-package="cn.nas.controller"></content:component-scan>
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!-- 配置静态资源文件访问位置 -->
+  <mvc:resources mapping="/css/**" location="/css/" />
+    <mvc:resources mapping="/fontsawesome/**" location="/fontsawesome/" />
+    <mvc:resources mapping="/images/**" location="/images/" />
+    <mvc:resources mapping="/js/**" location="/js/" />
+    <mvc:resources mapping="/uploads/**" location="/uploads/"/>
+    <mvc:resources mapping="/bosssystem/**" location="/bosssystem/"/>
+    <!-- 完成视图的对应 -->
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!-- 配置MultipartResolver，用于上传文件，使用spring的CommonsMultipartResolver -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+    </bean>
+
+    <!--
+        <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="5000000"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        </bean>
+    -->
+
+
+
+    <mvc:annotation-driven >
+        <mvc:message-converters register-defaults="true">
+            <!-- 解决@ResponseBody中文乱码 -->
+           <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+               <property name="supportedMediaTypes">
+                   <list>
+                       <value>application/json;charset=UTF-8</value>
+                       <value>text/html;charset=UTF-8</value>
+                   </list>
+
+               </property>
+
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+</beans>

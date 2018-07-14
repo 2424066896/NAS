@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nas.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="cn.nas.pojo.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_price" jdbcType="DOUBLE" property="orderPrice" />
+    <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+    <result column="order_date" jdbcType="TIMESTAMP" property="orderDate" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="custom_id" jdbcType="INTEGER" property="customId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+  </resultMap>
+
+  <resultMap id="querylist" type="cn.nas.pojo.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_num" jdbcType="VARCHAR" property="orderNum" />
+    <result column="order_price" jdbcType="DOUBLE" property="orderPrice" />
+    <result column="order_state" jdbcType="VARCHAR" property="orderState" />
+    <result column="order_date" jdbcType="TIMESTAMP" property="orderDate" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="custom_id" jdbcType="INTEGER" property="customId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="staff_id" jdbcType="INTEGER" property="staffId" />
+    <association property="custom" javaType="Custom">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="phone" jdbcType="VARCHAR" property="phone" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, order_num, order_price, order_state, order_date, pay_type, custom_id, goods_id, 
+    staff_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByordernum" resultType="java.lang.Integer">
+      SELECT id FROM  order_
+      WHERE order_num=#{ordernum}
+    </select>
+  <select id="selectBydate" resultMap="querylist">
+      SELECT o.*,cu.id as id,cu.name,cu.phone  FROM order_ as o ,custom as cu
+      <where>
+          <if test="start!=null and start!='' and end!=null and end!=''">
+            and order_date &gt;=#{start} and order_date &lt;=#{end}
+          </if>
+
+          <if test="start!=null and start!='' and end==null or end==''">
+            and order_date =#{start}
+          </if>
+          <if test="end!=null and end!='' and start==null or start==''">
+            and order_date =#{end}
+          </if>
+
+        <if test="start==''and end==''">
+        </if>
+          and o.custom_id=cu.id
+      </where>
+      limit #{from},#{pageSize}
+  </select>
+  <select id="selectCount" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM order_ as o ,custom as cu
+    <where>
+      <if test="start!=null and start!='' and end!=null and end!=''">
+        and order_date &gt;=#{start} and order_date &lt;=#{end}
+      </if>
+
+      <if test="start!=null and start!='' and end==null or end==''">
+        and order_date =#{start}
+      </if>
+      <if test="end!=null and end!='' and start==null or start==''">
+        and order_date =#{end}
+      </if>
+
+      <if test="start==''and end==''">
+      </if>
+      and o.custom_id=cu.id
+    </where>
+
+
+
+
+  </select>
+  <select id="selectByOrderNum" resultMap="BaseResultMap">
+    SELECT * FROM  order_
+    WHERE order_num = #{orderNum}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.nas.pojo.Order">
+    insert into order_ (id, order_num, order_price, 
+      order_state, order_date, pay_type, 
+      custom_id, goods_id, staff_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, #{orderPrice,jdbcType=DOUBLE}, 
+      #{orderState,jdbcType=VARCHAR}, #{orderDate,jdbcType=TIMESTAMP}, #{payType,jdbcType=VARCHAR}, 
+      #{customId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.nas.pojo.Order">
+    insert into order_
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="orderPrice != null">
+        order_price,
+      </if>
+      <if test="orderState != null">
+        order_state,
+      </if>
+      <if test="orderDate != null">
+        order_date,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="customId != null">
+        custom_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="staffId != null">
+        staff_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null">
+        #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="customId != null">
+        #{customId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.nas.pojo.Order">
+    update order_
+    <set>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null">
+        order_date = #{orderDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="customId != null">
+        custom_id = #{customId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null">
+        staff_id = #{staffId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.nas.pojo.Order">
+    update order_
+    set order_num = #{orderNum,jdbcType=VARCHAR},
+      order_price = #{orderPrice,jdbcType=DOUBLE},
+      order_state = #{orderState,jdbcType=VARCHAR},
+      order_date = #{orderDate,jdbcType=TIMESTAMP},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      custom_id = #{customId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
